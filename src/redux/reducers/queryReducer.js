@@ -22,8 +22,9 @@ const querySlice = createSlice({
         setLavoretti: (state, action) => {
             state.lavoretti = action.payload;
         },
+
         setPreferiti: (state, action) => {
-            state.preferiti = action.payload;
+            state.preferiti.push(action.payload);
         },
     },
 });
