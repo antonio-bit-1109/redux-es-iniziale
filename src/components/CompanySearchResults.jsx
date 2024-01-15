@@ -3,11 +3,18 @@ import { Container, Row, Col } from "react-bootstrap";
 import Job from "./Job";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { setLavoretti, setPreferiti } from "../redux/reducers/queryReducer";
+import ListComponent from "./ListComponent";
 
 const CompanySearchResults = () => {
-    const [jobs, setJobs] = useState([]);
-
+    /* const [jobs, setJobs] = useState([]); */
+    const dispatch = useDispatch();
     const params = useParams();
+    const lavoretti = useSelector((state) => state.queryState.lavoretti);
+    console.log(lavoretti);
+
+    const preferiti = useSelector((state) => state.queryState.preferiti);
+    console.log(preferiti);
 
     const baseEndpoint = "https://strive-benchmark.herokuapp.com/api/jobs?company=";
 
@@ -21,7 +28,7 @@ const CompanySearchResults = () => {
             const response = await fetch(baseEndpoint + params.company);
             if (response.ok) {
                 const { data } = await response.json();
-                setJobs(data);
+                dispatch(setLavoretti(data));
             } else {
                 alert("Error fetching results");
             }
@@ -35,9 +42,22 @@ const CompanySearchResults = () => {
             <Row>
                 <Col className="my-3">
                     <h1 className="display-4">Job posting for: {params.company}</h1>
-                    {jobs.map((jobData) => (
-                        <Job key={jobData._id} data={jobData} />
+                    {lavoretti.map((jobData) => (
+                        <div key={jobData._id}>
+                            <Job data={jobData} />
+                            <button
+                                onClick={() => {
+                                    dispatch(setPreferiti(jobData.company_name));
+                                    console.log(preferiti);
+                                }}
+                            >
+                                Salva Nei preferiti
+                            </button>
+                        </div>
                     ))}
+                </Col>
+                <Col>
+                    <ListComponent />
                 </Col>
             </Row>
         </Container>

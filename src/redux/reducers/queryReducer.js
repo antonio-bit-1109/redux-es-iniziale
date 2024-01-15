@@ -6,6 +6,8 @@ const querySlice = createSlice({
     initialState: {
         query: "",
         jobs: [],
+        lavoretti: [],
+        preferiti: [],
     },
 
     reducers: {
@@ -16,8 +18,15 @@ const querySlice = createSlice({
         setJobs: (state, action) => {
             state.jobs = action.payload;
         },
+
+        setLavoretti: (state, action) => {
+            state.lavoretti = action.payload;
+        },
+        setPreferiti: (state, action) => {
+            state.preferiti = action.payload;
+        },
     },
 });
 
-export const { setQuery, setJobs } = querySlice.actions;
+export const { setQuery, setJobs, setLavoretti, setPreferiti } = querySlice.actions;
 export default querySlice.reducer;
